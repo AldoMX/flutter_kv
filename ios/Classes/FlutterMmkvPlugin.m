@@ -52,19 +52,23 @@ MMKV *mmkv;
       [[self getMMKV] setString:stringValue forKey:key];
       result(@YES);
   }
-    
-    
+  else if([@"encode#bytes" isEqualToString:method]){
+      FlutterStandardTypedData *dataValue = arguments[@"value"];
+      [[self getMMKV] setData:[dataValue data] forKey:key];
+      result(@YES);
+  }
+
+
   else if([@"decode#int" isEqualToString:method]){
       NSNumber* defaultIntValue = arguments[@"value"];
       int32_t resultIntValue = [[self getMMKV] getInt32ForKey:key defaultValue:[defaultIntValue intValue]];
       result(@(resultIntValue));
   }
   else if([@"decode#bool" isEqualToString:method]){
-     BOOL defaultBoolValue = arguments[@"value"];
-     BOOL resultBoolValue = [[self getMMKV] getBoolForKey:key defaultValue:defaultBoolValue];
-     result(@(resultBoolValue));
+      NSNumber* defaultBoolValue = arguments[@"value"];
+      BOOL resultBoolValue = [[self getMMKV] getBoolForKey:key defaultValue:[defaultBoolValue boolValue]];
+      result(@(resultBoolValue));
   }
-    
   else if([@"decode#long" isEqualToString:method]){
       NSNumber* defaultlongValue = arguments[@"value"];
       int64_t resultLongValue = 0;
@@ -75,7 +79,6 @@ MMKV *mmkv;
       }
       result(@(resultLongValue));
   }
-    
   else if([@"decode#double" isEqualToString:method]){
       NSNumber* defaultDoubleValue = arguments[@"value"];
       double resultDoubleValue = 0;
@@ -95,6 +98,22 @@ MMKV *mmkv;
           resultStringValue = [[self getMMKV] getStringForKey:key defaultValue:defaultStringValue];
       }
       result(resultStringValue);
+  }
+  else if([@"decode#bytes" isEqualToString:method]){
+      FlutterStandardTypedData *defaultDataValue = arguments[@"value"];
+      NSData *resultDataValue;
+      if (defaultDataValue == nil) {
+          resultDataValue = [[self getMMKV] getDataForKey:key];
+      }else{
+          resultDataValue = [[self getMMKV] getDataForKey:key defaultValue:[defaultDataValue data]];
+      }
+      result([FlutterStandardTypedData typedDataWithBytes:resultDataValue]);
+  }
+
+
+  else if([@"clearAll" isEqualToString:method]){
+      [[self getMMKV] clearAll];
+      result(@YES);
   }
   else if([@"remove" isEqualToString:method]){
       [[self getMMKV] removeValueForKey:key];

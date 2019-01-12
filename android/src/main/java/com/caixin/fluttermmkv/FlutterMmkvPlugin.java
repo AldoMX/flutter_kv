@@ -65,6 +65,10 @@ public class FlutterMmkvPlugin implements MethodCallHandler {
         initMMKV().encode(key,(String)object);
         result.success(true);
         break;
+      case "encode#bytes":
+        initMMKV().encode(key,(byte[])object);
+        result.success(true);
+        break;
 
 
       case "decode#int":
@@ -84,8 +88,15 @@ public class FlutterMmkvPlugin implements MethodCallHandler {
       case "decode#string":
         result.success(initMMKV().decodeString(key,(String)object));
         break;
+      case "decode#bytes":
+        result.success(initMMKV().decodeBytes(key));
+        break;
 
 
+      case "clearAll":
+        initMMKV().clearAll();
+        result.success(true);
+        break;
       case "remove":
         initMMKV().removeValueForKey(key);
         result.success(true);

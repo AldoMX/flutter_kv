@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 
@@ -32,7 +33,6 @@ class FlutterKV {
     };
     return await _channel.invokeMethod('encode#long',argument);
   }
-
   static Future<bool> encodeDouble(String key,double value) async{
     var argument = {
       'key': key,
@@ -40,13 +40,19 @@ class FlutterKV {
     };
     return await _channel.invokeMethod('encode#double',argument);
   }
-
   static Future<bool> encodeString(String key,String value) async{
     var argument = {
       'key': key,
       'value': value
     };
     return await _channel.invokeMethod('encode#string',argument);
+  }
+  static Future<bool> encodeBytes(String key,Uint8List value) async{
+    var argument = {
+      'key': key,
+      'value': value
+    };
+    return await _channel.invokeMethod('encode#bytes',argument);
   }
 
 
@@ -83,6 +89,7 @@ class FlutterKV {
     };
     return await _channel.invokeMethod('decode#double',argument);
   }
+
   static Future<String> decodeString(String key,[String defaultValue = ""]) async{
     var argument = {
       'key': key,
@@ -91,6 +98,18 @@ class FlutterKV {
     return await _channel.invokeMethod('decode#string',argument);
   }
 
+  static Future<Uint8List> decodeBytes(String key,[Uint8List defaultValue = Uint8List(0)]) async{
+    var argument = {
+      'key': key,
+      'value': defaultValue
+    };
+    return await _channel.invokeMethod('decode#bytes',argument);
+  }
+
+
+  static Future<bool> clearAll() async{
+    return await _channel.invokeMethod('clearAll');
+  }
 
   static Future<bool> remove(String key) async{
     var argument = {
