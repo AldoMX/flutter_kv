@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kv/flutter_kv.dart';
+
 void main(){
   return runApp(MyApp());
 }
@@ -13,13 +14,13 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'}) : super(key: key);
 
   final String title;
 
@@ -69,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ],
         ),
